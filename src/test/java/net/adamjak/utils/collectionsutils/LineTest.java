@@ -199,4 +199,16 @@ public class LineTest {
         Line.cloneLine(nullLine);
     }
 
+    @Test
+    public void testAddToStart() {
+        Line<String> line1 = new Line<>();
+        line1.addToStart("a");
+        line1.addToStart("b");
+        line1.addToStart("c");
+
+        String cloneLineToString = StreamSupport.stream(Line.cloneLine(line1).spliterator(), true).map(Object::toString).collect(Collectors.joining(""));
+
+        Assert.assertEquals("cba", cloneLineToString);
+    }
+
 }

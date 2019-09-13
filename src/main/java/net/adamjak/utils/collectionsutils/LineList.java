@@ -55,7 +55,7 @@ public class LineList<T> implements List<T> {
 
     @Override
     public boolean isEmpty() {
-        return this.line.iterator().hasNext();
+        return this.line.iterator().hasNext() == false;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class LineList<T> implements List<T> {
         if (array == null) {
             throw new NullPointerException("Param array from method toArray(U[] array) can not be null!");
         }
-        U[] arr = (U[]) Array.newInstance(array.getClass(), this.size());
+        U[] arr = (U[]) Array.newInstance(array.getClass().getComponentType(), this.size());
 
         int i = 0;
         for (T t : this.line) {
@@ -193,12 +193,28 @@ public class LineList<T> implements List<T> {
 
     @Override
     public T set(int index, T element) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (index < 0 || index > this.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        final T replacedElement = this.get(index);
+        this.line.addBefore(replacedElement, element);
+        this.line.remove(replacedElement);
+
+        return replacedElement;
     }
 
     @Override
     public void add(int index, T element) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (index < 0 || index > this.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        if (index == 0) {
+            this.line.addToStart(element);
+        } else {
+            this.line.addAfter(this.get(index - 1), element);
+        }
     }
 
     @Override

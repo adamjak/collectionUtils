@@ -65,6 +65,17 @@ public class Line<T> implements Iterable<T> {
         }
     }
 
+    public void addToStart(T insertedObject) {
+        Atom<T> newAtom = new Atom<>(insertedObject, null);
+
+        if (this.start == null) {
+            this.start = this.end = newAtom;
+        } else {
+            newAtom.setNext(this.start);
+            this.start = newAtom;
+        }
+    }
+
     public boolean addAfter(T searched, T insertedObject) {
         Atom<T> current = this.start;
 
