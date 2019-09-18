@@ -6,6 +6,7 @@
 package net.adamjak.utils.collectionsutils;
 
 import java.util.Collections;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -130,21 +131,53 @@ public class LineListTest {
      * Test of addAll method, of class LineList.
      */
     @Test
-    public void testAddAll_Collection() {
+    public void testAddAll() {
+        LineList<String> l1 = new LineList<>();
+        l1.add("a");
+        l1.add("b");
+        l1.add("c");
 
+        LineList<String> l2 = new LineList<>();
+        l2.add("1");
+        l2.add("2");
+        l2.add("3");
+
+        LineList<String> l3 = new LineList<>();
+
+        l1.addAll(0, l2);
+
+        String exp1 = "123abc";
+        String r1 = String.join("", l1);
+
+        l1.addAll(3, l2);
+
+        String exp2 = "123123abc";
+        String r2 = String.join("", l1);
+
+        l2.addAll(0, l3);
+
+        String exp3 = "123";
+        String r3 = String.join("", l2);
+
+        l3.addAll(0, l2);
+
+        String exp4 = "123";
+        String r4 = String.join("", l3);
+
+        Assert.assertEquals(exp1, r1);
+        Assert.assertEquals(exp2, r2);
+        Assert.assertEquals(exp3, r3);
+        Assert.assertEquals(exp4, r4);
     }
 
-    /**
-     * Test of addAll method, of class LineList.
-     */
-    @Test
-    public void testAddAll_int_Collection() {
-        try {
-            new LineList<Object>().addAll(0, Collections.EMPTY_LIST);
-            Assert.assertTrue(false);
-        } catch (UnsupportedOperationException e) {
-            Assert.assertTrue(true);
-        }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testAddAllException1() {
+        new LineList().add(-1, Collections.EMPTY_LIST);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testAddAllException2() {
+        new LineList().add(3, Collections.EMPTY_LIST);
     }
 
     /**
@@ -178,6 +211,16 @@ public class LineListTest {
         Assert.assertEquals("c", l1.get(2));
     }
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testGetException1() {
+        new LineList().get(-1);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testGetException2() {
+        new LineList().get(5);
+    }
+
     /**
      * Test of set method, of class LineList.
      */
@@ -193,6 +236,16 @@ public class LineListTest {
         Assert.assertEquals("a", l1.get(0));
         Assert.assertEquals("x", l1.get(1));
         Assert.assertEquals("c", l1.get(2));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testSetException1() {
+        new LineList().set(-1, "a");
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testSetException2() {
+        new LineList().set(5, "a");
     }
 
     /**
@@ -215,6 +268,16 @@ public class LineListTest {
         Assert.assertEquals("c", l1.get(4));
     }
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testAdd_int_GenericTypeException1() {
+        new LineList().add(-1, "a");
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testAdd_int_GenericTypeException2() {
+        new LineList().add(5, "a");
+    }
+
     /**
      * Test of remove method, of class LineList.
      */
@@ -231,6 +294,16 @@ public class LineListTest {
         Assert.assertEquals("c", l1.get(1));
     }
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testRemove_intException1() {
+        new LineList().remove(-1);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testRemove_intException2() {
+        new LineList().remove(2);
+    }
+
     /**
      * Test of indexOf method, of class LineList.
      */
@@ -243,6 +316,7 @@ public class LineListTest {
         l1.add("c");
 
         Assert.assertEquals(1, l1.indexOf("b"));
+        Assert.assertEquals(-1, l1.indexOf("x"));
     }
 
     /**
@@ -278,9 +352,38 @@ public class LineListTest {
     /**
      * Test of subList method, of class LineList.
      */
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testSubList() {
-        new LineList<>().subList(0, 1);
+        LineList<String> l = new LineList<>();
+        l.add("a");
+        l.add("b");
+        l.add("c");
+        l.add("d");
+        l.add("e");
+        l.add("f");
+
+        List<String> r = l.subList(1, 4);
+
+        Assert.assertEquals(3, r.size());
+        Assert.assertEquals("b", r.get(0));
+        Assert.assertEquals("c", r.get(1));
+        Assert.assertEquals("d", r.get(2));
+
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testSubListException1() {
+        new LineList().subList(-1, 0);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testSubListException2() {
+        new LineList().subList(0, 1);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testSubListException3() {
+        new LineList().subList(0, -1);
     }
 
 }

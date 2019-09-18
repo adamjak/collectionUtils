@@ -48,6 +48,14 @@ public class LineList<T> implements List<T> {
         this.line = new Line<>();
     }
 
+    /**
+     *
+     * @return Return clone of {@link Line} whitch is internal representation of this list.
+     */
+    public Line<T> getLine() {
+        return Line.cloneLine(line);
+    }
+
     @Override
     public int size() {
         return Long.valueOf(StreamSupport.stream(this.line.spliterator(), false).count()).intValue();
@@ -121,11 +129,7 @@ public class LineList<T> implements List<T> {
         if (c == null) {
             throw new NullPointerException("Param c can not be null!");
         }
-        if (!c.stream().noneMatch((object) -> (this.contains(object) == false))) {
-            return false;
-        }
-
-        return true;
+        return c.stream().noneMatch((object) -> (this.contains(object) == false));
     }
 
     @Override
@@ -133,12 +137,27 @@ public class LineList<T> implements List<T> {
         c.forEach((t) -> {
             this.line.addToEnd(t);
         });
-        return true;
+        return c.isEmpty() == false;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (index < 0 || index > this.size()) {
+            throw new IndexOutOfBoundsException("index is out of range");
+        }
+        LineList<T> ll = new LineList<>();
+        ll.addAll(c);
+
+        if ((index == 0 && c.isEmpty()) || (index == 0 && this.isEmpty()) || index == this.size()) {
+            return this.addAll(c);
+        }
+
+        if (index == 0) {
+            this.line.addBefore(this.get(0), ll.getLine());
+        } else {
+            this.line.addAfter(this.get(index - 1), ll.getLine());
+        }
+        return ll.isEmpty() == false;
     }
 
     @Override
@@ -219,8 +238,8 @@ public class LineList<T> implements List<T> {
 
     @Override
     public T remove(int index) throws IndexOutOfBoundsException {
-        if (index < 0) {
-            throw new IndexOutOfBoundsException("Index must be great that 0!");
+        if (index < 0 || index >= this.size()) {
+            throw new IndexOutOfBoundsException("Index must be great that 0 and smaller that list size!");
         }
         int i = 0;
         for (T t : this.line) {
@@ -272,7 +291,19 @@ public class LineList<T> implements List<T> {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (fromIndex < 0 || toIndex > this.size() || fromIndex > toIndex) {
+            throw new IndexOutOfBoundsException("Illegal endpoint index value (fromIndex < 0 || toIndex > size || fromIndex > toIndex)");
+        }
+
+        LineList<T> newList = new LineList<>();
+        int size = this.size();
+        for (int i = 0; i < size; i++) {
+            if (i >= fromIndex && i < toIndex) {
+                newList.add(this.get(i));
+            }
+        }
+
+        return newList;
     }
 
 }
