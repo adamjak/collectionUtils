@@ -33,18 +33,24 @@ Maven
 -----
 ```xml
 <repositories>
-	<repository>
-		<releases>
-			<enabled>true</enabled>
-			<updatePolicy>always</updatePolicy>
+    <repository>
+        <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
             <checksumPolicy>fail</checksumPolicy>
-		</releases>
-		<id>Collection Utils</id>
-		<name>Tomas Adamjak</name>
-		<url>http://repo.adamjak.net/nexus/content/repositories/adamjak_net_releases/</url>
-		<layout>default</layout>
-	</repository>
+        </releases>
+        <id>Collection Utils</id>
+        <name>Tomas Adamjak</name>
+        <url>http://repo.adamjak.net/nexus/content/repositories/adamjak_net_releases/</url>
+        <layout>default</layout>
+    </repository>
 </repositories>
+
+<dependency>
+    <groupId>net.adamjak.utils</groupId>
+    <artifactId>collectionsUtils</artifactId>
+    <version>1.0-FINAL</version>
+</dependency>
 
 <dependency>
 	<groupId>net.adamjak.utils</groupId>
