@@ -52,10 +52,4 @@ Maven
     <version>1.0-FINAL</version>
 </dependency>
 
-<dependency>
-	<groupId>net.adamjak.utils</groupId>
-	<artifactId>collectionsUtils</artifactId>
-	<version>1.0-FINAL</version>
-</dependency>
-
 ```
