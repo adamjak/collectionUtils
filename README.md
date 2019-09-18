@@ -27,3 +27,4 @@ Unit test coverage
 | LineIterator | 0 of  32            | 100% | 0 of  4         | 100% |
 | Atom         | 0 of  26            | 100% |                 | n/a  |
 | **Total       | 100 of 958          | 89%  | 25 of 150       | 83% ** |
+
